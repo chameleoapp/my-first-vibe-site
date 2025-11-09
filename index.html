@@ -172,6 +172,63 @@
             border-bottom-color: rgba(120, 119, 198, 0.6);
             text-shadow: 0 0 10px rgba(120, 119, 198, 0.5);
         }
+        
+        a.button-link {
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(120, 119, 198, 0.3);
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(120, 119, 198, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        a.button-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(120, 119, 198, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        a.button-link:hover {
+            background: rgba(30, 30, 50, 0.9);
+            border-color: rgba(120, 119, 198, 0.6);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(120, 119, 198, 0.4), 0 0 40px rgba(88, 28, 135, 0.3), inset 0 0 30px rgba(120, 119, 198, 0.2);
+            color: #ffffff;
+            border-bottom: 1px solid rgba(120, 119, 198, 0.6);
+            text-shadow: 0 0 10px rgba(120, 119, 198, 0.5);
+        }
+        
+        a.button-link:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        a.button-link:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        
+        a.button-link span {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -179,7 +236,7 @@
     <p>This is my first site built using AI and vibe coding.</p>
     <p style="margin-top: 1rem; margin-bottom: 2rem; background: transparent; border: none; box-shadow: none; padding: 0.5rem;"><a href="about.html">Learn more about me</a></p>
     <button><span>Contact me</span></button>
-    <button><span>Start my chameleo experience</span></button>
+    <a href="chameleo.html" class="button-link"><span>Start my chameleo experience</span></a>
     <p style="margin-top: 2rem; margin-bottom: 0; background: transparent; border: none; box-shadow: none; padding: 0.5rem;"><a href="about.html">About</a></p>
 </body>
 </html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chameleo.world - Your Cultural Decoder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0f;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(88, 28, 135, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(25, 25, 112, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 60% 40%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+            color: #e0e0e0;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+                radial-gradient(2px 2px at 60% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+                radial-gradient(1px 1px at 80% 10%, #fff, transparent),
+                radial-gradient(2px 2px at 90% 40%, #fff, transparent),
+                radial-gradient(1px 1px at 33% 60%, #fff, transparent),
+                radial-gradient(1px 1px at 66% 20%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 15% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 75% 25%, #fff, transparent);
+            background-repeat: repeat;
+            background-size: 200% 200%;
+            animation: stars 25s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes stars {
+            from { transform: translateY(0) rotate(0deg); }
+            to { transform: translateY(-200px) rotate(360deg); }
+        }
+        
+        .cosmic-orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(120, 119, 198, 0.2) 0%, transparent 70%);
+            filter: blur(40px);
+            animation: float 8s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        .cosmic-orb:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .cosmic-orb:nth-child(2) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 200;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(120, 119, 198, 0.6),
+                         0 0 60px rgba(88, 28, 135, 0.4),
+                         0 0 90px rgba(138, 43, 226, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: pulse-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from {
+                text-shadow: 0 0 30px rgba(120, 119, 198, 0.6),
+                            0 0 60px rgba(88, 28, 135, 0.4),
+                            0 0 90px rgba(138, 43, 226, 0.3);
+            }
+            to {
+                text-shadow: 0 0 40px rgba(120, 119, 198, 0.9),
+                            0 0 80px rgba(88, 28, 135, 0.6),
+                            0 0 120px rgba(138, 43, 226, 0.5);
+            }
+        }
+        
+        .tagline {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: #b0b0ff;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 20px rgba(120, 119, 198, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+        
+        p {
+            text-align: center;
+            font-size: 1.25rem;
+            max-width: 700px;
+            line-height: 1.8;
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(15px);
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(120, 119, 198, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                        inset 0 0 30px rgba(120, 119, 198, 0.08),
+                        0 0 60px rgba(88, 28, 135, 0.2);
+            margin-bottom: 2rem;
+            color: #d0d0d0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            max-width: 900px;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-card {
+            background: rgba(20, 20, 35, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(120, 119, 198, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                        inset 0 0 20px rgba(120, 119, 198, 0.05);
+            flex: 1 1 250px;
+            min-width: 200px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(120, 119, 198, 0.5);
+            box-shadow: 0 8px 30px rgba(120, 119, 198, 0.3),
+                        inset 0 0 30px rgba(120, 119, 198, 0.15);
+        }
+        
+        .feature-card h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(120, 119, 198, 0.5);
+        }
+        
+        .feature-card p {
+            background: transparent;
+            backdrop-filter: none;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            margin: 0;
+            font-size: 1rem;
+            text-align: left;
+        }
+        
+        button {
+            background: rgba(20, 20, 35, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(120, 119, 198, 0.4);
+            color: #e0e0e0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 1.2rem 3rem;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                        inset 0 0 20px rgba(120, 119, 198, 0.1),
+                        0 0 40px rgba(88, 28, 135, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 0.5rem;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(120, 119, 198, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:hover {
+            background: rgba(30, 30, 50, 0.95);
+            border-color: rgba(120, 119, 198, 0.7);
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 40px rgba(120, 119, 198, 0.5),
+                        0 0 60px rgba(88, 28, 135, 0.4),
+                        inset 0 0 40px rgba(120, 119, 198, 0.25);
+            color: #ffffff;
+        }
+        
+        button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+        
+        button:active {
+            transform: translateY(-3px) scale(0.98);
+        }
+        
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        a {
+            color: #b0b0ff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+            position: relative;
+            z-index: 1;
+        }
+        
+        a:hover {
+            color: #ffffff;
+            border-bottom-color: rgba(120, 119, 198, 0.6);
+            text-shadow: 0 0 15px rgba(120, 119, 198, 0.6);
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-orb"></div>
+    <div class="cosmic-orb"></div>
+    
+    <h1>Chameleo</h1>
+    <p class="tagline">Your Cultural Decoder</p>
+    
+    <p>We help you understand and navigate the complex world of cultural codes, symbols, and meanings that shape our interactions and experiences. Decode the hidden language of culture.</p>
+    
+    <div class="features">
+        <div class="feature-card">
+            <h3>Cultural Decoding</h3>
+            <p>Unlock the meanings behind cultural symbols, gestures, and communication patterns.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Symbol Analysis</h3>
+            <p>Deep dive into the significance of symbols across different cultures and contexts.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Meaning Navigation</h3>
+            <p>Navigate the intricate web of cultural meanings that influence our daily lives.</p>
+        </div>
+    </div>
+    
+    <div class="button-group">
+        <button><span>Start Decoding</span></button>
+        <button><span>Explore Cultures</span></button>
+    </div>
+    
+    <p style="margin-top: 2rem; margin-bottom: 0; background: transparent; border: none; box-shadow: none; padding: 0.5rem;"><a href="index.html">Back to Home</a></p>
+</body>
+</html>
+
