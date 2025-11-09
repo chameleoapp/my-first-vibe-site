@@ -373,12 +373,133 @@
             overflow: hidden;
             border: 1px solid rgba(120, 119, 198, 0.3);
             box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+            background: rgba(10, 10, 20, 0.5);
         }
         
-        .map-container iframe {
+        .map-container svg {
             width: 100%;
             height: 100%;
-            border: none;
+        }
+        
+        .country {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .country:hover {
+            fill: rgba(120, 119, 198, 0.6) !important;
+            stroke: rgba(120, 119, 198, 1) !important;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px rgba(120, 119, 198, 0.8));
+        }
+        
+        .country.active {
+            fill: rgba(120, 119, 198, 0.8) !important;
+            stroke: rgba(120, 119, 198, 1) !important;
+            stroke-width: 2;
+        }
+        
+        /* Cultural Profile Modal */
+        .cultural-profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .cultural-profile-modal.active {
+            display: flex;
+        }
+        
+        .cultural-profile-content {
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(120, 119, 198, 0.4);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90vh;
+            width: 600px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6),
+                        0 0 60px rgba(120, 119, 198, 0.3),
+                        inset 0 0 40px rgba(120, 119, 198, 0.1);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            overflow-y: auto;
+        }
+        
+        .cultural-profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cultural-profile-header h2 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 300;
+            text-shadow: 0 0 20px rgba(120, 119, 198, 0.5);
+            margin: 0;
+        }
+        
+        .cultural-dimension {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(30, 30, 50, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid rgba(120, 119, 198, 0.6);
+        }
+        
+        .cultural-dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cultural-dimension-name {
+            color: #b0b0ff;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .cultural-dimension-scale {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+        
+        .cultural-dimension-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(120, 119, 198, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .cultural-dimension-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(120, 119, 198, 0.8), rgba(88, 28, 135, 0.8));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(120, 119, 198, 0.5);
+        }
+        
+        .cultural-dimension-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 0.25rem;
         }
         
         .map-instructions {
@@ -446,6 +567,12 @@
     
     <p style="margin-top: 2rem; margin-bottom: 0; background: transparent; border: none; box-shadow: none; padding: 0.5rem;"><a href="index.html">Back to Home</a></p>
     
+    <!-- Cultural Profile Modal -->
+    <div id="culturalProfileModal" class="cultural-profile-modal">
+        <div class="cultural-profile-content" id="culturalProfileContent">
+        </div>
+    </div>
+    
     <!-- Map Modal -->
     <div id="mapModal" class="map-modal">
         <div class="map-modal-content">
@@ -454,18 +581,111 @@
                 <button class="map-close-btn" onclick="closeMapModal()">&times;</button>
             </div>
             <div class="map-container">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.184132576!2d-73.98811768459387!3d40.75889597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+                <svg id="worldMap" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified world map with major countries -->
+                    <!-- Asia -->
+                    <path id="singapore" class="country" d="M 750 350 L 760 350 L 760 360 L 750 360 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="china" class="country" d="M 650 200 L 750 200 L 750 280 L 650 280 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="japan" class="country" d="M 780 220 L 800 220 L 800 240 L 780 240 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="india" class="country" d="M 600 250 L 650 250 L 650 300 L 600 300 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    
+                    <!-- Europe -->
+                    <path id="germany" class="country" d="M 450 150 L 500 150 L 500 180 L 450 180 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="france" class="country" d="M 420 160 L 450 160 L 450 190 L 420 190 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="uk" class="country" d="M 400 140 L 420 140 L 420 160 L 400 160 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    
+                    <!-- Americas -->
+                    <path id="usa" class="country" d="M 150 180 L 280 180 L 280 250 L 150 250 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="brazil" class="country" d="M 300 280 L 350 280 L 350 350 L 300 350 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="mexico" class="country" d="M 180 240 L 220 240 L 220 270 L 180 270 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    
+                    <!-- Middle East & Africa -->
+                    <path id="uae" class="country" d="M 550 280 L 570 280 L 570 295 L 550 295 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    <path id="southafrica" class="country" d="M 500 380 L 550 380 L 550 420 L 500 420 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                    
+                    <!-- Oceania -->
+                    <path id="australia" class="country" d="M 750 380 L 820 380 L 820 420 L 750 420 Z" fill="rgba(120, 119, 198, 0.3)" stroke="rgba(120, 119, 198, 0.6)" stroke-width="1"/>
+                </svg>
             </div>
-            <p class="map-instructions">Click and drag on the map to explore different regions. Click on a location to decode its cultural context.</p>
+            <p class="map-instructions">Click on any country to view its cultural profile and decoding analysis.</p>
         </div>
     </div>
     
     <script>
+        // Cultural profiles data
+        const culturalProfiles = {
+            singapore: {
+                name: "Singapore",
+                flag: "🇸🇬",
+                dimensions: {
+                    "Communication": { value: 6, labels: ["Direct", "Indirect"] },
+                    "Time": { value: 8, labels: ["Linear", "Multi-active"] },
+                    "Decisions": { value: 5, labels: ["I-first", "We-first"] },
+                    "Rules": { value: 8, labels: ["Strict", "Flexible"] },
+                    "Hierarchy": { value: 6, labels: ["Equality", "Authority"] },
+                    "Trust": { value: 6, labels: ["Task", "Relationship"] },
+                    "Risk": { value: 5, labels: ["Brave", "Safe"] },
+                    "Work–Life": { value: 8, labels: ["Work", "Lifestyle"] }
+                }
+            },
+            china: {
+                name: "China",
+                flag: "🇨🇳",
+                dimensions: {
+                    "Communication": { value: 3, labels: ["Direct", "Indirect"] },
+                    "Time": { value: 7, labels: ["Linear", "Multi-active"] },
+                    "Decisions": { value: 2, labels: ["I-first", "We-first"] },
+                    "Rules": { value: 9, labels: ["Strict", "Flexible"] },
+                    "Hierarchy": { value: 9, labels: ["Equality", "Authority"] },
+                    "Trust": { value: 2, labels: ["Task", "Relationship"] },
+                    "Risk": { value: 4, labels: ["Brave", "Safe"] },
+                    "Work–Life": { value: 9, labels: ["Work", "Lifestyle"] }
+                }
+            },
+            japan: {
+                name: "Japan",
+                flag: "🇯🇵",
+                dimensions: {
+                    "Communication": { value: 2, labels: ["Direct", "Indirect"] },
+                    "Time": { value: 9, labels: ["Linear", "Multi-active"] },
+                    "Decisions": { value: 2, labels: ["I-first", "We-first"] },
+                    "Rules": { value: 9, labels: ["Strict", "Flexible"] },
+                    "Hierarchy": { value: 9, labels: ["Equality", "Authority"] },
+                    "Trust": { value: 2, labels: ["Task", "Relationship"] },
+                    "Risk": { value: 3, labels: ["Brave", "Safe"] },
+                    "Work–Life": { value: 9, labels: ["Work", "Lifestyle"] }
+                }
+            },
+            usa: {
+                name: "United States",
+                flag: "🇺🇸",
+                dimensions: {
+                    "Communication": { value: 9, labels: ["Direct", "Indirect"] },
+                    "Time": { value: 9, labels: ["Linear", "Multi-active"] },
+                    "Decisions": { value: 9, labels: ["I-first", "We-first"] },
+                    "Rules": { value: 5, labels: ["Strict", "Flexible"] },
+                    "Hierarchy": { value: 8, labels: ["Equality", "Authority"] },
+                    "Trust": { value: 8, labels: ["Task", "Relationship"] },
+                    "Risk": { value: 8, labels: ["Brave", "Safe"] },
+                    "Work–Life": { value: 6, labels: ["Work", "Lifestyle"] }
+                }
+            },
+            germany: {
+                name: "Germany",
+                flag: "🇩🇪",
+                dimensions: {
+                    "Communication": { value: 9, labels: ["Direct", "Indirect"] },
+                    "Time": { value: 9, labels: ["Linear", "Multi-active"] },
+                    "Decisions": { value: 7, labels: ["I-first", "We-first"] },
+                    "Rules": { value: 9, labels: ["Strict", "Flexible"] },
+                    "Hierarchy": { value: 7, labels: ["Equality", "Authority"] },
+                    "Trust": { value: 9, labels: ["Task", "Relationship"] },
+                    "Risk": { value: 6, labels: ["Brave", "Safe"] },
+                    "Work–Life": { value: 5, labels: ["Work", "Lifestyle"] }
+                }
+            }
+        };
+        
         function openMapModal() {
             document.getElementById('mapModal').classList.add('active');
         }
@@ -474,6 +694,56 @@
             document.getElementById('mapModal').classList.remove('active');
         }
         
+        function showCulturalProfile(countryId) {
+            const profile = culturalProfiles[countryId];
+            if (!profile) return;
+            
+            const modal = document.getElementById('culturalProfileModal');
+            const content = document.getElementById('culturalProfileContent');
+            
+            // Build profile HTML
+            let html = `
+                <div class="cultural-profile-header">
+                    <h2>${profile.flag} ${profile.name}</h2>
+                    <button class="map-close-btn" onclick="closeCulturalProfile()">&times;</button>
+                </div>
+            `;
+            
+            for (const [dimension, data] of Object.entries(profile.dimensions)) {
+                const percentage = (data.value / 10) * 100;
+                html += `
+                    <div class="cultural-dimension">
+                        <div class="cultural-dimension-header">
+                            <span class="cultural-dimension-name">${dimension}</span>
+                            <span class="cultural-dimension-scale">${data.value}/10</span>
+                        </div>
+                        <div class="cultural-dimension-bar">
+                            <div class="cultural-dimension-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="cultural-dimension-labels">
+                            <span>${data.labels[0]}</span>
+                            <span>${data.labels[1]}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = html;
+            modal.classList.add('active');
+        }
+        
+        function closeCulturalProfile() {
+            document.getElementById('culturalProfileModal').classList.remove('active');
+        }
+        
+        // Make countries clickable
+        document.querySelectorAll('.country').forEach(country => {
+            country.addEventListener('click', function() {
+                const countryId = this.id;
+                showCulturalProfile(countryId);
+            });
+        });
+        
         // Close modal when clicking outside
         document.getElementById('mapModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -481,10 +751,17 @@
             }
         });
         
+        document.getElementById('culturalProfileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCulturalProfile();
+            }
+        });
+        
         // Close modal with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeMapModal();
+                closeCulturalProfile();
             }
         });
     </script>
